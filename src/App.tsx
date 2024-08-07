@@ -1,13 +1,19 @@
 import Message from "./Message"
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
+import Button from "./components/Button";
+import { useState } from 'react';
 
 function App() {
-  const cities = ["New York", "Tokyo", "Los Angeles", "Paris", "London"];
+  const [alertVisible, setAlertVisibility] = useState(false);
 
   return (
     <div>
-      <Alert />
+      {alertVisible &&
+        <Alert onClose={() => setAlertVisibility(false)}>
+          <Message />
+        </Alert>}
+      <Button color="dark" text="Click Me" onClicked={() => setAlertVisibility(true)} />
     </div>
   );
 }

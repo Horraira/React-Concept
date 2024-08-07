@@ -1,5 +1,8 @@
 import { Fragment, useState } from "react";
 
+// interface is used to define the type of props that the component will receive from the parent component
+// props is used to pass data from parent to child component
+
 interface Props {
     cities: string[];
     title: string;
