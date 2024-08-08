@@ -1,5 +1,24 @@
 import { Fragment, useState } from "react";
+import styled from "styled-components";
 import "./ListGroup.css";
+
+const List = styled.ul`
+    list-style-type: none;
+    padding: 0;
+`;
+
+interface ListItemProps {
+    active: boolean;
+}
+
+const ListItem = styled.li <ListItemProps>`
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f9f9f9;
+    }
+    background: ${(props) => props.active ? "#f9f9f9" : "white"};
+`;
 
 // interface is used to define the type of props that the component will receive from the parent component
 // props is used to pass data from parent to child component
@@ -18,16 +37,16 @@ function ListGroup(props: Props) {
         <Fragment>
             <h1>List</h1>
             {props.cities.length === 0 && <p>No cities</p>}
-            <ul className="list-group">
+            <List>
                 {props.cities.map((city, index) => (
-                    <li key={index}
+                    <ListItem key={index}
+                        active={selectedCity === index}
                         onClick={() => {
                             setSelectedCity(index);
                             props.onSelectItem(city);
-                        }}
-                        className={selectedCity === index ? "list-group-item active" : "list-group-item"}>{city}</li>
+                        }}>{city}</ListItem>
                 ))}
-            </ul>
+            </List>
         </Fragment>
     )
 }
