@@ -1,6 +1,7 @@
 import Message from "./Message"
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
+import Like from "./components/Like";
 import Button from "./components/Button";
 import { useState } from 'react';
 import { GiClover } from "react-icons/gi";
@@ -17,6 +18,7 @@ function App() {
         </Alert>}
       <Button color="dark" text="Click Me" onClicked={() => setAlertVisibility(true)} />
       <GiClover size={50} color="green" />
+      <Like onClick={() => console.log('Clicked')} />
       <ListGroup cities={cities} onSelectItem={(city) => console.log(city)} />
     </div>
   );
