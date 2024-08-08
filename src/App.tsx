@@ -3,6 +3,7 @@ import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
 import { useState } from 'react';
+import { GiClover } from "react-icons/gi";
 
 function App() {
   const [alertVisible, setAlertVisibility] = useState(false);
@@ -15,6 +16,7 @@ function App() {
           <Message />
         </Alert>}
       <Button color="dark" text="Click Me" onClicked={() => setAlertVisibility(true)} />
+      <GiClover size={50} color="green" />
       <ListGroup cities={cities} onSelectItem={(city) => console.log(city)} />
     </div>
   );
