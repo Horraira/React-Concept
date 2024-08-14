@@ -65,6 +65,41 @@ function App() {
     setCartItems([]);
   }
 
+  const [game, setGame] = useState({
+    id: 1,
+    player: {
+      name: 'John',
+      score: 10,
+    }
+  });
+
+  const updateGame = () => {
+    setGame({
+      ...game,
+      player: {
+        ...game.player,
+        name: 'John Doe',
+        score: game.player.score + 10
+      }
+    });
+  }
+
+  const [newCart, setNewCart] = useState({
+    discount: 10,
+    items: [
+      { id: 1, name: 'Product 1', price: 100 },
+      { id: 2, name: 'Product 2', price: 200 },
+      { id: 3, name: 'Product 3', price: 300 }
+    ]
+  });
+
+  const handleNewCart = () => {
+    setNewCart({
+      ...newCart,
+      items: newCart.items.map(item => item.id === 2 ? { ...item, price: item.price + 50 } : item)
+    });
+  }
+
   return (
     <div>
       {alertVisible &&
@@ -76,12 +111,17 @@ function App() {
       <Button color="dark" text="Click Me" onClicked={() => setAlertVisibility(true)} /> <br />
       || {drinks.name} - {drinks.price} - {drinks.ingredients.sugar} - {drinks.ingredients.water}||<br />
       <Button color="dark" text="Update Drink" onClicked={updateDrink} /> <br />
-      <Button color="dark" text="Custom Tag" onClicked={handleTag} /> <br /><br />
+      {tags.map(tag => <div key={tag}>{tag}</div>)} <br />
+      <Button color="dark" text="Custom Tag" onClicked={handleTag} /> <br />
       {bugs.map(bug => <div key={bug.id}>{bug.description} - {bug.fixed ? 'Fixed' : 'Not Fixed'}</div>)}
       <Button color="dark" text="Handle Bug" onClicked={handleBug} /> <br />
-      <ListGroup cities={cities} onSelectItem={(city) => console.log(city)} /> <br /><br />
+      <ListGroup cities={cities} onSelectItem={(city) => console.log(city)} /> <br />
       <Navbar cartItemsCount={cartItems.length} /> <br />
       <Cart clearCart={clearCart} cartItems={cartItems} />
+      {game.player.name} - {game.player.score}   :-
+      <Button color="dark" text="Update Game" onClicked={updateGame} />
+      {newCart.items.map(item => <div key={item.id}>{item.name} - {item.price}</div>)}
+      <Button color="dark" text="Update Cart" onClicked={handleNewCart} />
     </div>
   );
 }
