@@ -1,23 +1,13 @@
-import React, { useRef, FormEvent, ChangeEvent } from 'react'
+import React, { FormEvent, useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 const Form = () => {
 
-    const nameRef = useRef<HTMLInputElement>(null)
-    const ageRef = useRef<HTMLInputElement>(null)
-    const person = {
-        name: '',
-        age: 0
-    }
+    const [person, setPerson] = useState({ name: '', age: '' })
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
-        person.name = nameRef.current!.value
-        person.age = parseInt(ageRef.current!.value)
         console.log('Person:', person)
-    }
-
-    const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        // console.log('Name:', event.target.value)
     }
 
     return (
@@ -26,15 +16,22 @@ const Form = () => {
         // button.btn.btn-primary
         <form onSubmit={(event) => {
             handleSubmit(event)
-            console.log('Form submitted')
         }}>
             <div className="mb-3">
                 <label htmlFor="name" className="form-label">Name</label>
-                <input ref={nameRef} id='name' type="text" className="form-control" onChange={handleNameChange} />
+                <input id='name' type="text"
+                    className="form-control"
+                    // for single source of truth
+                    value={person.name}
+                    onChange={(event) => setPerson({ ...person, name: event.target.value })} />
             </div>
             <div className="mb-3">
                 <label htmlFor="age" className="form-label">Age</label>
-                <input ref={ageRef} id='age' type="number" className="form-control" />
+                <input id='age' type="number"
+                    className="form-control"
+                    // for single source of truth
+                    value={person.age}
+                    onChange={(event) => setPerson({ ...person, age: parseInt(event.target.value) })} />
             </div>
             <button className="btn btn-primary" type='submit'>Submit</button>
         </form>
