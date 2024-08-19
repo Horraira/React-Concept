@@ -1,14 +1,22 @@
 import React, { FormEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-interface FromData {
-    name: string,
-    age: number
-}
+const schema = z.object({
+    name: z.string().min(5, { message: 'Name must be at least 8 characters' }),
+    age: z.number({ invalid_type_error: 'Age field required' }).min(18, { message: 'Age must be at least 18' })
+})
+
+type FormData = z.infer<typeof schema>
 
 const Form = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FromData>()
+    const { register, handleSubmit,
+        formState: { errors } } = useForm<FormData>({
+            resolver: zodResolver(schema)
+        })
+
     const onSubmit = (data: any) => {
         console.log(data)
     }
@@ -20,15 +28,15 @@ const Form = () => {
                 <label htmlFor="name" className="form-label">Name</label>
                 <input id='name' type="text"
                     className="form-control"
-                    {...register('name', { required: true, minLength: 3 })} />
-                {errors.name?.type == 'required' && <span className='text-danger'>This field is required</span>}
-                {errors.name?.type == 'minLength' && <span className='text-danger'>Name length must be at least three char</span>}
+                    {...register('name')} />
+                {errors.name && <span className='text-danger'>{errors.name.message}</span>}
             </div>
             <div className="mb-3">
                 <label htmlFor="age" className="form-label">Age</label>
                 <input id='age' type="number"
                     className="form-control"
-                    {...register('age')} />
+                    {...register('age', { valueAsNumber: true })} />
+                {errors.age && <span className='text-danger'>{errors.age.message}</span>}
             </div>
             <button className="btn btn-primary" type='submit'>Submit</button>
         </form>
