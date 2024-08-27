@@ -1,20 +1,24 @@
 import ProductList from "./components/ProductList";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosError, CanceledError } from "axios";
 
 function App() {
   const [users, setUsers] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/users')
+    const controller = new AbortController();
+
+    axios.get('https://jsonplaceholder.typicode.com/users', { signal: controller.signal })
       .then(response => {
-        console.log(response.data)
         setUsers(response.data)
       })
       .catch(error => {
-        setError(error.message)
+        if (error instanceof CanceledError) return;
+        setError(error.message);
       })
+
+    return () => controller.abort()
   }, [])
 
   return (
